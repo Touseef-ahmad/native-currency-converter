@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
-import { COLORS } from '../contants';
+import { COLORS } from '../../styles';
 
 const styles = StyleSheet.create({
   button: {
@@ -23,7 +23,7 @@ export const Button = ({ text, onButtonPress }) => (
   <TouchableOpacity style={styles.button} onPress={onButtonPress}>
     <Image
       style={styles.buttonIcon}
-      source={require('../assets/images/reverse.png')}
+      source={require('../../assets/images/reverse.png')}
       resizeMode='contain'
     />
     <Text style={styles.buttonText}>{text}</Text>

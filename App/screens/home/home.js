@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View,
+  Dimensions,
+  Image,
+  Keyboard,
+  SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
-  Image,
-  Dimensions,
   Text,
-  SafeAreaView,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
-import { ConversionInput, Button } from '../../components';
+import { ConversionInput, Button, KeyboardSpacer } from '../../components';
 import { fetchExchangeRates } from '../../api';
-import { COLORS } from '../../contants';
+import { COLORS } from '../../styles';
 
 const screen = Dimensions.get('window');
 
@@ -79,6 +81,8 @@ export const Home = ({ navigation }) => {
   const [conversionRate, setConversionRate] = useState(165.72);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [scrollEnabled, setScrollEnabled] = useState(false);
+
   useEffect(() => {
     const getCoversionRate = async () => {
       const data = await fetchExchangeRates(baseCurrency, quoteCurrency);
@@ -105,59 +109,62 @@ export const Home = ({ navigation }) => {
           <Entypo name='cog' size={32} color='white' />
         </TouchableOpacity>
       </SafeAreaView>
-      <View style={styles.content}>
-        <View style={styles.logoContainer}>
-          <Image
-            resizeMode='contain'
-            style={styles.logoBackground}
-            source={require('../../assets/images/background.png')}
-          />
-          <Image
-            resizeMode='contain'
-            style={styles.logo}
-            source={require('../../assets/images/logo.png')}
-          />
-        </View>
-        <Text style={styles.textHeader}>Currency Converter</Text>
-        <View style={styles.inputContainer}>
-          <ConversionInput
-            onButtonPress={() =>
-              navigation.push('CurrencyList', {
-              title: 'Base Currency',
-              activeCurrency: baseCurrency,
-              onChange: (currency) => setBaseCurrency(currency),
-            })
-            }
-            onChangeText={(text) => setValue(text)}
-            text={baseCurrency}
-            value={value}
-            keyboardType='numeric'
-          />
-          <ConversionInput
-            editable={false}
-            keyboardType='numeric'
-            onButtonPress={() =>
-              navigation.push('CurrencyList', {
-              title: 'Quote Currency',
-              activeCurrency: quoteCurrency,
-              onChange: (currency) => setQuoteCurrency(currency),
-            })
-            }
-            text={quoteCurrency}
-            value={value && `${(parseFloat(value) * conversionRate).toFixed(2)}`}
-          />
-        </View>
-        <Text style={styles.text}>
-          {`1 ${baseCurrency} equals ${conversionRate.toFixed(2)} ${quoteCurrency}`}
-        </Text>
-        <Button onButtonPress={() => swapCurrencies()} text='Reverse currencies' />
-        {error && (
-          <View style={styles.errorContainer}>
-            <MaterialIcons color={COLORS.white} name='error' size={20} />
-            <Text style={styles.errorText}>{errorMessage}</Text>
+      <ScrollView scrollEnabled={scrollEnabled}>
+        <View style={styles.content}>
+          <View style={styles.logoContainer}>
+            <Image
+              resizeMode='contain'
+              style={styles.logoBackground}
+              source={require('../../assets/images/background.png')}
+            />
+            <Image
+              resizeMode='contain'
+              style={styles.logo}
+              source={require('../../assets/images/logo.png')}
+            />
           </View>
-        )}
-      </View>
+          <Text style={styles.textHeader}>Currency Converter</Text>
+          <View style={styles.inputContainer}>
+            <ConversionInput
+              onButtonPress={() =>
+                navigation.push('CurrencyList', {
+                title: 'Base Currency',
+                activeCurrency: baseCurrency,
+                onChange: (currency) => setBaseCurrency(currency),
+              })
+              }
+              onChangeText={(text) => setValue(text)}
+              text={baseCurrency}
+              value={value}
+              keyboardType='numeric'
+            />
+            <ConversionInput
+              editable={false}
+              keyboardType='numeric'
+              onButtonPress={() =>
+                navigation.push('CurrencyList', {
+                title: 'Quote Currency',
+                activeCurrency: quoteCurrency,
+                onChange: (currency) => setQuoteCurrency(currency),
+              })
+              }
+              text={quoteCurrency}
+              value={value && `${(parseFloat(value) * conversionRate).toFixed(2)}`}
+            />
+          </View>
+          <Text style={styles.text}>
+            {`1 ${baseCurrency} equals ${conversionRate.toFixed(2)} ${quoteCurrency}`}
+          </Text>
+          <Button onButtonPress={() => swapCurrencies()} text='Reverse currencies' />
+          {error && (
+            <View style={styles.errorContainer}>
+              <MaterialIcons color={COLORS.white} name='error' size={20} />
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            </View>
+          )}
+        </View>
+        <KeyboardSpacer onToggle={(visible) => setScrollEnabled(visible)} />
+      </ScrollView>
     </View>
   );
 };

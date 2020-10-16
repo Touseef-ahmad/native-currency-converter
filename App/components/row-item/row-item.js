@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { COLORS } from '../contants';
+import { COLORS } from '../../styles';
 
 const styles = StyleSheet.create({
   row: {

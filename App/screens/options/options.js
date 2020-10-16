@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, Linking, StatusBar } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { RowItem, RowSeperator } from '../../components';
-import { COLORS } from '../../contants';
+import { COLORS } from '../../styles';
 
 const styles = StyleSheet.create({
   safeareapadding: {

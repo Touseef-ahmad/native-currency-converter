@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, TextInput, StyleSheet } from 'react-native';
 
-import { COLORS } from '../contants';
+import { COLORS } from '../../styles';
 
 const styles = StyleSheet.create({
   container: {
